@@ -1,0 +1,44 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit SQL Query</title>
+</head>
+<body>
+    <h1>Submit SQL Query</h1>
+    
+    <form id="sqlForm">
+        <label for="sqlQuery">SQL Query:</label>
+        <textarea id="sqlQuery" name="sqlQuery" placeholder="Enter your SQL query here"></textarea>
+        <button type="button" onclick="executeQuery()">Execute Query</button>
+    </form>
+    
+    <div id="result"></div>
+
+    <script>
+        async function executeQuery() {
+            const query = document.getElementById('sqlQuery').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/execute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query })
+                });
+
+                const result = await response.json();
+
+                const resultDiv = document.getElementById('result');
+                // Display the result on the webpage
+                resultDiv.innerHTML = JSON.stringify(result);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
